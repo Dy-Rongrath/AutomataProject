@@ -9,7 +9,8 @@ const rl = readline.createInterface({
 
 // Function to convert a string to a list of strings
 function stringToList(str) {
-  return str.split(' ');
+  str = str.replaceAll(" ", ",");
+  return str.split(',');
 }
 
 // Ask the user to enter the states

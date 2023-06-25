@@ -50,6 +50,8 @@ function test() {
         q2: { "0": "q2", "1": "q2" },
     };
 
+    
+
     // const startState = "q0";
     const startState = inputStartState.value;
 

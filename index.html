@@ -1,48 +1,96 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>Finite Automaton</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finite Automata</title>
+    <link rel="stylesheet" href="./asset/Style/input.css">
+    <!-- <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet"> -->
 </head>
 
 <body>
-    <h1>Finite Automaton</h1>
-    <div id="input-container">
-        <label for="state-input">Enter the automaton states separated by space:</label>
-        <input type="text" id="state-input">
+    <div class="wrapper">
+        <h1 class="title">
+            Finite Automata Simulation
+        </h1>
+        <div class="container">
+            <button type="button" id="resetBtn" class="">Reset</button>
+            <form action="form-horizontal">
+                <div class="faInput">
+                    <p class="fa">FA</p>
+                    <div class="alphabets forInput">
+                        <label for="alphabets" >Alphabets:</label>
+                        <input type="text" id="alphabets" title="alphabets" placeholder="a b c ...">
+                    </div>
+                    <div class="startState forInput">
+                        <label for="startState">Start state:</label>
+                        <input type="text" id="startStart" title="start state" placeholder="q1">
+                    </div>
+                    <div class="acceptState forInput">
+                        <label for="acceptState">Accept State(s):</label>
+                        <input type="text" id="acceptState" title="accept state" placeholder="q2 q3 ...">
+                    </div>
+                </div>
+            </form>
+
+            <div class="form-inline" id="transitions">
+                <div class="production-row" style="display:block">
+                    &delta;(&nbsp;<input type="current-state-input" title="Current State" />
+                    &nbsp;,&nbsp;<input type="text" class="form-control input-symbol" title="Symbol"
+                        placeholder="&epsilon;" />&nbsp;)&nbsp;=&nbsp;<input type="text"
+                        class="form-control next-states" title="Next State(s)" />
+
+                    <span class="remove-button mdi-close" title="Remove this transition"></span>
+                </div>
+                <div class="clearfix"></div>
+
+                <br />
+
+                <div class="col-xs-6 new-production">
+                    <button id="new-transition" type="button" class="btn btn-outline-dark"
+                        title="Create a new transition">
+                        <span class="glyphicon glyphicon-plus"></span> &nbsp;Add a new transition
+                    </button>
+                </div>
+            </div>
+
+            <br />
+
+            <div class="clearfix"></div>
+
+            <div class ="visual">
+                <button type="button" class="btn btn-outline-danger" id="visualization" title="Visualize the FAs"> Visualize</button>
+            </div>
+
+            <div class="typeofFA">
+                <p>Type of FA:</p>
+                <span id="typeFA"></span>
+            </div>
+    
+            <div class="testString">
+                <p>Test String</p>
+                <div class="inputString">
+                    <label for="inputString">Input String: </label>
+                    <input type="text" name="" title="test string" id="inputString">
+                </div>
+                <div class="result">
+                    <p>Result</p>
+                    <span id="result"></span>
+                </div>
+            </div>
+    
+            <div class ="N2D">
+                <button type="button" class="btn" id="N2D" title="DFA to NFA"> NFA to DFA</button>
+                <div class="F2D-output">output DFA</div>
+            </div>
+    
+            <div class ="Minamize">
+                <button type="button" class="btn" id="N2D" title="DFA to NFA">Minizize FA</button>
+                <div class="minimize-output">output Minimize</div>
+            </div>
+        </div>
     </div>
-
-    <div id="input-container">
-        <label for="alphabet-input">Enter the automaton alphabets separated by space:</label>
-        <input type="text" id="alphabet-input">
-    </div>
-
-    <div id="input-container">
-        <label for="start-state-input">Enter the start state of the automaton:</label>
-        <input type="text" id="start-state-input">
-    </div>
-
-    <div id="input-container">
-        <label for="accept-states-input">Enter the accepting states of the automaton separated by space:</label>
-        <input type="text" id="accept-states-input">
-    </div>
-
-    <div id="transition-container"></div>
-    <div id="input-container">
-        <label for="input-string">Enter the input string to run the automaton:</label>
-        <input type="text" id="input-string">
-    </div>
-
-    <!-- <div id="input-container">
-        <label for="next-states-input">Enter the next states for the following (enter . for dead/reject state)</label>
-        <input type="text" id="next-states-input">
-    </div> -->
-
-    <button onclick="runAutomaton()">Run Automaton</button>
-    <div id="result"></div>
-
-    <script src="script.js"></script>
 </body>
 
 </html>
