@@ -7,7 +7,6 @@
 .wrapper {
     width: 960px;
     margin: auto;
-
     background: #FFF;
 
     .title {
@@ -24,7 +23,8 @@
     .container {
         margin: auto;
         width: 46.0625rem;
-        height: 88.6875rem;
+        // height: 88.6875rem;
+        padding-bottom: 1rem;
         flex-shrink: 0;
         background: #FFE4E4;
         padding-top: 1.2rem;
@@ -57,6 +57,7 @@
             margin-top: 1rem;
             border: 1px solid #000;
             background: #FFF;
+            border-radius: 1rem;
 
             .fa {
                 display: flex;
@@ -103,7 +104,7 @@
                     justify-content: center;
                     align-items: center;
                     flex-shrink: 0;
-                    color: #C5B7B7;
+                    color: #000000;
                     font-size: 0.875rem;
                     font-family: Inter;
                     font-weight: 500;
@@ -153,5 +154,115 @@
             background: #60D989 !important;
             color: #000000 !important;
         }
+
+        .typeofFA {
+            margin: auto;
+            width: 24.3125rem;
+            height: 2rem;
+            margin-top: 1rem;
+            display: flex;
+            // justify-content: center;
+            align-items: center;
+            color: #003B73;
+            text-align: center;
+            font-size: 1.25rem;
+            font-family: Inter;
+            font-weight: 800;
+            margin-bottom: 1rem;
+
+            span {
+                color: red;
+                margin-left: 0.5rem;
+            }
+        }
+
+        .testString {
+            margin: auto;
+            width: 32.5rem;
+            padding-bottom: 1rem;
+            border-radius: 1rem;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid black;
+            background-color: #FFF;
+
+            .test {
+                margin-top: 1rem;
+                width: 100%;
+                color: #003B73;
+                text-align: center;
+                font-size: 1.25rem;
+                font-family: Inter;
+                font-weight: 800;
+            }
+
+            .inputString,
+            .result {
+                margin: auto;
+                width: 70%;
+                display: flex;
+                align-items: center;
+                margin-top: 1rem;
+
+                label,
+                p {
+                    color: #000;
+                    text-align: center;
+                    font-size: 1rem;
+                    font-family: Inter;
+                    font-weight: 600;
+
+                }
+
+                span {
+                    margin-left: .5rem;
+                    font-weight: 600;
+                    color: #F00;
+                }
+
+                input {
+                    height: 2rem;
+                    margin-left: .5rem;
+                    padding-left: .3rem;
+                    color: #000;
+                    font-size: 0.875rem;
+                    font-family: Inter;
+                    font-weight: 600;
+                }
+            }
+
+        }
+
+        .N2D, .Minamize {
+            margin: auto;
+            width: 70%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-top: 1rem;
+            
+            .output{
+                width: 100%;
+                border: 2px solid gray;
+                margin: 1rem;
+                min-height: 100px;
+            }
+        }
+        button {
+            margin: auto;
+            width: 9.5625rem;
+            height: 2.25rem;
+            flex-shrink: 0;
+            border-radius: 10px;
+            background: #5C7487;
+            color: #ffffff;
+            text-align: center;
+            font-size: 0.875rem;
+            font-family: Inter;
+            font-weight: 800;
+        }
     }
+
 }

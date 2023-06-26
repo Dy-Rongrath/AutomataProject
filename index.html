@@ -19,15 +19,15 @@
             <form action="form-horizontal">
                 <div class="faInput">
                     <p class="fa">FA</p>
-                    <div class="alphabets forInput">
-                        <label for="alphabets" >Alphabets:</label>
+                    <div class="forInput">
+                        <label for="alphabets">Alphabets:</label>
                         <input type="text" id="alphabets" title="alphabets" placeholder="a b c ...">
                     </div>
                     <div class="startState forInput">
                         <label for="startState">Start state:</label>
-                        <input type="text" id="startStart" title="start state" placeholder="q1">
+                        <input type="text" id="startState" title="start state" placeholder="q1">
                     </div>
-                    <div class="acceptState forInput">
+                    <div class="forInput">
                         <label for="acceptState">Accept State(s):</label>
                         <input type="text" id="acceptState" title="accept state" placeholder="q2 q3 ...">
                     </div>
@@ -59,38 +59,40 @@
 
             <div class="clearfix"></div>
 
-            <div class ="visual">
-                <button type="button" class="btn btn-outline-danger" id="visualization" title="Visualize the FAs"> Visualize</button>
+            <div class="visual">
+                <button type="button" class="btn btn-outline-danger" id="visualization" title="Visualize the FAs">
+                    Visualize</button>
             </div>
 
             <div class="typeofFA">
                 <p>Type of FA:</p>
-                <span id="typeFA"></span>
+                <span id="typeFA">DFA</span>
             </div>
-    
+
             <div class="testString">
-                <p>Test String</p>
+                <p class="test">Test String</p>
                 <div class="inputString">
                     <label for="inputString">Input String: </label>
                     <input type="text" name="" title="test string" id="inputString">
                 </div>
                 <div class="result">
-                    <p>Result</p>
-                    <span id="result"></span>
+                    <p>Result: </p>
+                    <span id="result">Rejected</span>
                 </div>
             </div>
-    
-            <div class ="N2D">
+
+            <div class="N2D">
                 <button type="button" class="btn" id="N2D" title="DFA to NFA"> NFA to DFA</button>
-                <div class="F2D-output">output DFA</div>
+                <div class="output">output DFA</div>
             </div>
-    
-            <div class ="Minamize">
+
+            <div class="Minamize">
                 <button type="button" class="btn" id="N2D" title="DFA to NFA">Minizize FA</button>
-                <div class="minimize-output">output Minimize</div>
+                <div class="output">output Minimize</div>
             </div>
         </div>
     </div>
 </body>
+<script src="/asset/Script/script.js"></script>
 
 </html>
