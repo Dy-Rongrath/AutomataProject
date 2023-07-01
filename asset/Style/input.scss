@@ -44,6 +44,7 @@
             font-size: 0.875rem;
             font-family: Inter;
             font-weight: 800;
+            cursor: pointer;
         }
 
         #resetBtn:hover {
@@ -64,10 +65,48 @@
             align-items: center;
             justify-content: center;
 
-            #addTransition{
+            #addTransition {
                 padding: .5rem;
                 margin: 1rem;
-                background-color:lightblue;
+                background-color: lightblue;
+                cursor: pointer;
+            }
+
+            #transitions {
+                width: 100%;
+                // height: 100%;
+                // background: #BFD7ED;
+                // border: 1px solid #000000;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                overflow: auto;
+
+                table {
+
+                    tr {
+
+                        th,
+                        td {
+                            width: 60px;
+                            height: 30px;
+                        }
+                    }
+
+                    input {
+                        width: 60px;
+                        border: none;
+                        outline: none;
+                    }
+                }
+
+                table,
+                th,
+                td {
+                    border: 1px solid black;
+                    border-collapse: collapse;
+                }
             }
 
             .fa {
@@ -143,6 +182,7 @@
         #new-transition,
         #visualization {
             margin: auto;
+            margin-top: 1rem;
             width: 9.5625rem;
             height: 2.25rem;
             flex-shrink: 0;
@@ -245,7 +285,8 @@
 
         }
 
-        .N2D, .Minamize {
+        .N2D,
+        .Minamize {
             margin: auto;
             width: 70%;
             display: flex;
@@ -253,14 +294,15 @@
             justify-content: center;
             align-items: center;
             margin-top: 1rem;
-            
-            .output{
+
+            .output {
                 width: 100%;
                 border: 2px solid gray;
                 margin: 1rem;
                 min-height: 100px;
             }
         }
+
         button {
             margin: auto;
             width: 9.5625rem;
@@ -273,14 +315,15 @@
             font-size: 0.875rem;
             font-family: Inter;
             font-weight: 800;
+            cursor: pointer;
 
-            
         }
-        .btn:active{
+
+        .btn:active {
             background-color: #f1f1f1 !important;
             color: black !important;
         }
-        
+
     }
 
 }

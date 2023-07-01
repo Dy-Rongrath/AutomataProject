@@ -42,6 +42,7 @@
   font-size: 0.875rem;
   font-family: Inter;
   font-weight: 800;
+  cursor: pointer;
 }
 .wrapper .container #resetBtn:hover {
   background-color: rgb(185, 181, 181);
@@ -63,6 +64,31 @@
   padding: 0.5rem;
   margin: 1rem;
   background-color: lightblue;
+  cursor: pointer;
+}
+.wrapper .container .faInput #transitions {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: auto;
+}
+.wrapper .container .faInput #transitions table tr th,
+.wrapper .container .faInput #transitions table tr td {
+  width: 60px;
+  height: 30px;
+}
+.wrapper .container .faInput #transitions table input {
+  width: 60px;
+  border: none;
+  outline: none;
+}
+.wrapper .container .faInput #transitions table,
+.wrapper .container .faInput #transitions th,
+.wrapper .container .faInput #transitions td {
+  border: 1px solid black;
+  border-collapse: collapse;
 }
 .wrapper .container .faInput .fa {
   display: flex;
@@ -127,6 +153,7 @@
 .wrapper .container #new-transition,
 .wrapper .container #visualization {
   margin: auto;
+  margin-top: 1rem;
   width: 9.5625rem;
   height: 2.25rem;
   flex-shrink: 0;
@@ -219,7 +246,8 @@
   font-family: Inter;
   font-weight: 600;
 }
-.wrapper .container .N2D, .wrapper .container .Minamize {
+.wrapper .container .N2D,
+.wrapper .container .Minamize {
   margin: auto;
   width: 70%;
   display: flex;
@@ -228,7 +256,8 @@
   align-items: center;
   margin-top: 1rem;
 }
-.wrapper .container .N2D .output, .wrapper .container .Minamize .output {
+.wrapper .container .N2D .output,
+.wrapper .container .Minamize .output {
   width: 100%;
   border: 2px solid gray;
   margin: 1rem;
@@ -246,6 +275,7 @@
   font-size: 0.875rem;
   font-family: Inter;
   font-weight: 800;
+  cursor: pointer;
 }
 .wrapper .container .btn:active {
   background-color: #f1f1f1 !important;

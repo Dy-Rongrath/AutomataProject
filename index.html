@@ -15,7 +15,7 @@
             Finite Automata Simulation
         </h1>
         <div class="container">
-            <button type="button" id="resetBtn" class="">Reset</button>
+            <button type="button" id="resetBtn" class="btn">Reset</button>
             <form action="form-horizontal">
                 <div class="faInput">
                     <p class="fa">FA</p>
@@ -37,34 +37,8 @@
                     </div>
                     <input type="button" id="addTransition" class="btn" value="Add Transition">
 
-                    <div id="transition"></div>
+                    <div id="transitions"></div>
                 </div>
-            </form>
-
-            <!-- <div class="form-inline" id="transitions">
-                <div class="production-row" style="display:block">
-                    &delta;(&nbsp;<input type="current-state-input" title="Current State" />
-                    &nbsp;,&nbsp;<input type="text" class="form-control input-symbol" title="Symbol"
-                        placeholder="&epsilon;" />&nbsp;)&nbsp;=&nbsp;<input type="text"
-                        class="form-control next-states" title="Next State(s)" />
-
-                    <span class="remove-button mdi-close" title="Remove this transition"></span>
-                </div>
-                <div class="clearfix"></div>
-
-                <br />
-
-                <div class="col-xs-6 new-production">
-                    <button id="new-transition" type="button" class="btn btn-outline-dark"
-                        title="Create a new transition">
-                        <span class="glyphicon glyphicon-plus"></span> &nbsp;Add a new transition
-                    </button>
-                </div>
-            </div> -->
-
-            <br />
-
-            <div class="clearfix"></div>
 
             <div class="visual">
                 <button type="button" class="btn" id="visualization" title="Visualize the FAs">
@@ -73,18 +47,18 @@
 
             <div class="typeofFA">
                 <p>Type of FA:</p>
-                <span id="typeFA">DFA</span>
+                <span id="typeFA">N/A</span>
             </div>
 
             <div class="testString">
-                <p class="test">Test String</p>
+                <p class="test" id="test1">Test String</p>
                 <div class="inputString">
                     <label for="inputString">Input String: </label>
                     <input type="text" name="" title="test string" id="inputString">
                 </div>
                 <div class="result">
                     <p>Result: </p>
-                    <span id="result">Rejected</span>
+                    <span id="result">N/A</span>
                 </div>
             </div>
 
