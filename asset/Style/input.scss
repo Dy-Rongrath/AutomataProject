@@ -51,13 +51,24 @@
         }
 
         .faInput {
-            width: 24.3125rem;
-            height: 12.5625rem;
+            width: 32.5rem;
+            // height: 12.5625rem;
+            padding-bottom: 1rem;
             margin: auto;
             margin-top: 1rem;
             border: 1px solid #000;
             background: #FFF;
             border-radius: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            #addTransition{
+                padding: .5rem;
+                margin: 1rem;
+                background-color:lightblue;
+            }
 
             .fa {
                 display: flex;
@@ -151,7 +162,7 @@
         }
 
         #visualization {
-            background: #60D989 !important;
+            background: #60D989;
             color: #000000 !important;
         }
 
@@ -262,7 +273,14 @@
             font-size: 0.875rem;
             font-family: Inter;
             font-weight: 800;
+
+            
         }
+        .btn:active{
+            background-color: #f1f1f1 !important;
+            color: black !important;
+        }
+        
     }
 
 }

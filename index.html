@@ -20,8 +20,12 @@
                 <div class="faInput">
                     <p class="fa">FA</p>
                     <div class="forInput">
+                        <label for="allState">All States:</label>
+                        <input type="text" id="allStates" title="all State" placeholder="q0, q1, q2, ...">
+                    </div>
+                    <div class="forInput">
                         <label for="alphabets">Alphabets:</label>
-                        <input type="text" id="alphabets" title="alphabets" placeholder="a b c ...">
+                        <input type="text" id="alphabets" title="alphabets" placeholder="a, b, ...">
                     </div>
                     <div class="startState forInput">
                         <label for="startState">Start state:</label>
@@ -29,12 +33,15 @@
                     </div>
                     <div class="forInput">
                         <label for="acceptState">Accept State(s):</label>
-                        <input type="text" id="acceptState" title="accept state" placeholder="q2 q3 ...">
+                        <input type="text" id="acceptState" title="accept state" placeholder="q2, q3, ...">
                     </div>
+                    <input type="button" id="addTransition" class="btn" value="Add Transition">
+
+                    <div id="transition"></div>
                 </div>
             </form>
 
-            <div class="form-inline" id="transitions">
+            <!-- <div class="form-inline" id="transitions">
                 <div class="production-row" style="display:block">
                     &delta;(&nbsp;<input type="current-state-input" title="Current State" />
                     &nbsp;,&nbsp;<input type="text" class="form-control input-symbol" title="Symbol"
@@ -53,14 +60,14 @@
                         <span class="glyphicon glyphicon-plus"></span> &nbsp;Add a new transition
                     </button>
                 </div>
-            </div>
+            </div> -->
 
             <br />
 
             <div class="clearfix"></div>
 
             <div class="visual">
-                <button type="button" class="btn btn-outline-danger" id="visualization" title="Visualize the FAs">
+                <button type="button" class="btn" id="visualization" title="Visualize the FAs">
                     Visualize</button>
             </div>
 

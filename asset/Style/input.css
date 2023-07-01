@@ -47,13 +47,22 @@
   background-color: rgb(185, 181, 181);
 }
 .wrapper .container .faInput {
-  width: 24.3125rem;
-  height: 12.5625rem;
+  width: 32.5rem;
+  padding-bottom: 1rem;
   margin: auto;
   margin-top: 1rem;
   border: 1px solid #000;
   background: #FFF;
   border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.wrapper .container .faInput #addTransition {
+  padding: 0.5rem;
+  margin: 1rem;
+  background-color: lightblue;
 }
 .wrapper .container .faInput .fa {
   display: flex;
@@ -135,7 +144,7 @@
   justify-content: center;
 }
 .wrapper .container #visualization {
-  background: #60D989 !important;
+  background: #60D989;
   color: #000000 !important;
 }
 .wrapper .container .typeofFA {
@@ -237,4 +246,8 @@
   font-size: 0.875rem;
   font-family: Inter;
   font-weight: 800;
+}
+.wrapper .container .btn:active {
+  background-color: #f1f1f1 !important;
+  color: black !important;
 }/*# sourceMappingURL=input.css.map */

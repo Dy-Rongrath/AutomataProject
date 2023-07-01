@@ -1,4 +1,5 @@
-let stateState = document.querySelector("#startState");
+let allStates = document.querySelector("#allStates");
+let startState = document.querySelector("#startState");
 let alphabet = document.querySelector("#alphabets");
 let isAccept = document.querySelector("#acceptState");
 let transition = document.querySelector("#transitions");
@@ -8,8 +9,10 @@ const addTransition = document.querySelector("#new-transition");
 const visualize = document.querySelector("#visualization");
 
 function reset(){
-    stateState.value="";
+    allStates.value="";
+    startState.value="";
     alphabet.value="";
     isAccept.value="";
+
 }
 resetBtn.addEventListener('click', reset);
