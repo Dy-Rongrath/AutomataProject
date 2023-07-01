@@ -237,6 +237,14 @@
             flex-direction: column;
             border: 1px solid black;
             background-color: #FFF;
+            position: relative;
+
+            #forTest{
+                position: absolute;
+                right: 80px; 
+                top: 55px;  
+                padding: 5px;
+            }
 
             .test {
                 margin-top: 1rem;

@@ -149,15 +149,16 @@ function isAcceptedDFA(input) {
     for (let i = 0; i < input.length; i++) {
         let string = input.charAt(i);
 
-        // if (!allTransition[currentState][string]) {
-        //     return false; // No transition defined for the current state and symbol
-        // }
-
+        if (!allTransition[currentState][string]) {
+            return false; // No transition defined for the current state and symbol
+        }
         currentState = allTransition[currentState][string];
     }
 
     for (let i = 0; i < accepteState.length; i++) {
-        if (accepteState[i].includes(currentState)) return true;
+        if (accepteState[i].includes(currentState)) {
+            return true;
+        }
     }
     return false;
 }
@@ -230,7 +231,7 @@ visualize.addEventListener('click', function () {
 });
 
 let checkString = document.getElementById("inputString");
-checkString.addEventListener("keydown", function(){
+document.getElementById("forTest").addEventListener("click", function(){
     // visulize();
     let accept = true;
     if(isDFA()){
@@ -238,7 +239,7 @@ checkString.addEventListener("keydown", function(){
         document.getElementById('test1').innerHTML = "Test String (DFA)";
     }else{
         accept = isAcceptedNFA(checkString.value);
-        document.getElementById('test1').innerHTML = "Test String (DFA)";
+        document.getElementById('test1').innerHTML = "Test String (NFA)";
     }
 
     if(accept){
