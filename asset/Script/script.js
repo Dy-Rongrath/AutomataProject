@@ -280,6 +280,7 @@ function convertNFAToDFA(nfa) {
         const currentStateKey = currentState.join(",");
 
         if (currentStateKey === "") {
+            // currentStateKey = "REJ";
             continue;
         }
 
@@ -313,6 +314,27 @@ function convertNFAToDFA(nfa) {
     for (let i = 0; i < duplicateValue.length; i++) {
         delete dfa.transitions[duplicateValue[i]];
     }
+
+    // add state Reject if have
+    for (let s=0; s<dfa.states.length; s++){
+        if(dfa.states[s] == ''){
+            dfa.states[s] = "REJ";
+            let reject = {};
+            for (let symbol of dfa.symbols){
+                let t = {[symbol]:["REJ"]};
+                reject = {...reject,...t};
+            }
+            dfa.transitions['REJ'] = reject;
+        }
+
+        // Check in transition if transition to null it will show reject
+        for(let symbol1 of dfa.symbols){
+            if(dfa.transitions[dfa.states[s]][symbol1] == ''){
+                dfa.transitions[dfa.states[s]][symbol1] = ['REJ'];
+            }
+        }
+    }
+    
 
     return dfa;
 }
@@ -393,30 +415,9 @@ function removeDuplicate(states) {
 }
 // outPutNFA();
 function outPutNFA(dfa) {
+    
     console.log(dfa);
     let output = document.getElementById("outputDFAConvert");
-
-    // const dfa = {
-    //     states: [],
-    //     symbols: nfa.symbols,
-    //     transitions: {},
-    //     startState: "",
-    //     acceptStates: [],
-    // };
-    // visulize();
-    // let dfa = convertNFAToDFA(nfa);
-    // let dfa = {
-    //     states: ["q0","q1","q2","q3" ],
-    //     StartState: "q0",
-    //     AcceptStates: ["q2", "q3"],
-    //     symbols: ["a", "b", "c"],
-    //     transition: {
-    //         "q0":{"a":["q1"], "b":["q2"], "c":["q3"]},
-    //         "q1":{"a":["q1"], "b":["q2"], "c":["q3"]},
-    //         "q2":{"a":["q1"], "b":["q2"], "c":["q3"]},
-    //         "q3":{"a":["q1"], "b":["q2"], "c":["q3"]},
-    //     }
-    // }
     text = `<div class="classTransition">DFA Output</div>
       <table >
       <tr>`;
@@ -424,11 +425,6 @@ function outPutNFA(dfa) {
         if (x == 0) {
             text = text + `<th>State</th>`;
         } else {
-            // if (x == alphabet.length) {
-            //     text = text + `<th>&#8712;</th>`;
-            // } else {
-            //     text = text + `<th>${alphabet[x - 1]}</th>`;
-            // }
             text = text + `<th>${dfa.symbols[x-1]}</th>`;
         }
     }
@@ -439,19 +435,24 @@ function outPutNFA(dfa) {
             text = text + `</tr><tr>`;
             if(dfa.startState == dfa.states[i-1]){
                 if(dfa.acceptStates.includes(dfa.states)){
-                    text = text + `<th>&#8594;${dfa.states[i-1]}<sup>&#8902;</sup></th>`;
+                    text = text + `<th>👉${dfa.states[i-1]}*</th>`;
                 }else{
-                    text = text + `<th>&#8594;${dfa.states[i-1]}</th>`;
+                    text = text + `<th>👉${dfa.states[i-1]}</th>`;
                 }
             }else{
                 if(dfa.acceptStates.includes(dfa.states[i-1])){
-                    text = text + `<th>${dfa.states[i-1]}<sup>&#8902;</sup></th>`;
+                    // print star for accept states
+                    text = text + `<th>${dfa.states[i-1]}*</th>`;
                 }else{
                     text = text + `<th>${dfa.states[i-1]}</th>`;
                 }
             }
             for (let j = 0; j <= dfa.symbols.length; j++) {
                 if (j != 0) {
+                        // if(Transitions_state[dfa.symbols[j-1]] ==''){
+                        //     console.log("undefined");
+                        //     Transitions_state[dfa.symbols[j-1]] = ["REJ"];
+                        // }
                     text = text +`<td>${Transitions_state[dfa.symbols[j-1]]}</td>`;
                 }
             }
