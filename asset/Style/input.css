@@ -84,12 +84,6 @@
   border: none;
   outline: none;
 }
-.wrapper .container .faInput #transitions table,
-.wrapper .container .faInput #transitions th,
-.wrapper .container .faInput #transitions td {
-  border: 1px solid black;
-  border-collapse: collapse;
-}
 .wrapper .container .faInput .fa {
   display: flex;
   width: 24.3125rem;
@@ -287,4 +281,11 @@
 .wrapper .container .btn:active {
   background-color: #f1f1f1 !important;
   color: black !important;
+}
+
+table,
+th,
+td {
+  border: 1px solid black;
+  border-collapse: collapse;
 }/*# sourceMappingURL=input.css.map */
