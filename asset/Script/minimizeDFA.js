@@ -119,3 +119,8 @@ const dfa = {
 
 const minimizedDFA = minimizeDFA(dfa);
 console.log(minimizedDFA);
+
+let output = document.getElementById("output");
+document.getElementById("btn").addEventListener('click', function(){
+  let text = '';
+});

@@ -317,6 +317,11 @@ function convertNFAToDFA(nfa) {
     delete dfa.transitions[duplicateValue[i]];
   }
 
+
+  if(!dfa.states.includes(dfa.startState)){
+    dfa.states.push(dfa.startState);
+  }
+
   // add state Reject if have
   for (let s = 0; s < dfa.states.length; s++) {
     if (dfa.states[s] == "") {
@@ -324,7 +329,7 @@ function convertNFAToDFA(nfa) {
       let reject = {};
       for (let symbol of dfa.symbols) {
         let t = { [symbol]: "REJ" };
-        reject = { ...reject, ...t };
+        reject = { ...t, ...reject };
       }
       dfa.transitions["REJ"] = reject;
     }
@@ -336,11 +341,6 @@ function convertNFAToDFA(nfa) {
       }
     }
   }
-
-  if(!dfa.states.includes(dfa.startState)){
-    dfa.states.push(dfa.startState);
-  }
-
 
   return dfa;
 }
