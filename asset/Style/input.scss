@@ -101,12 +101,7 @@
                     }
                 }
 
-                table,
-                th,
-                td {
-                    border: 1px solid black;
-                    border-collapse: collapse;
-                }
+               
             }
 
             .fa {
@@ -334,4 +329,10 @@
 
     }
 
+}
+table,
+th,
+td {
+    border: 1px solid black;
+    border-collapse: collapse;
 }

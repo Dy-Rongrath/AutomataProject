@@ -11,8 +11,9 @@ var allState = {};
 var alphabet = {};
 var startState = {};
 var accepteState = {};
-var allTransition = {};// this allTransition for use test string
+var allTransition = {}; // this allTransition for use test string
 var Transition = {}; // this for use to check DFA or not
+var duplicateValue = [];
 
 //----------- for convert from string to array if have ","
 function stringToList(str) {
@@ -20,7 +21,6 @@ function stringToList(str) {
     str = str.trim();
     return str.split(",");
 }
-
 
 //-------------- get input for FA
 function getInput() {
@@ -30,18 +30,8 @@ function getInput() {
     startState = stringToList(inputStartState.value);
     accepteState = stringToList(inputAcceptState.value);
 
-    for (let i in alphabet) {
-        console.log("\t", alphabet[i]);
-    }
-    for (let i in allState) {
-        console.log(allState[i], "\t");
-        for (let j in alphabet) {
-            console.log(allState[i] + alphabet[j]);
-        }
-    }
     console.log(allState);
     console.log(alphabet);
-    makeTransition();
 }
 
 //-------------- get all State and alphabet for create table transition
@@ -52,7 +42,7 @@ function makeTransition() {
       <tr>`;
     for (let x = 0; x <= alphabet.length; x++) {
         if (x == 0) {
-            text = text + `<th></th>`;
+            text = text + `<th>State</th>`;
         } else {
             if (x == alphabet.length) {
                 text = text + `<th>&#8712;</th>`;
@@ -79,11 +69,9 @@ function makeTransition() {
     outTransition.innerHTML = text + `</tr></table>`;
 }
 
-
-
 //----------------------- get value in table to store in variable transition as opject of array
 function visulize() {
-
+    getInput();
     for (let i = 0; i < allState.length; i++) {
         var str = "";
         str = allState[i];
@@ -93,11 +81,12 @@ function visulize() {
             let getValue = "";
             getValue = allState[i] + alphabet[j];
             let temp = document.getElementById(getValue);
-            
+
             // check get value use all part expect function check FA
-            if (temp.value != "") {// check if it is not input value is not record
-                let x = {[alphabet[j]]:stringToList(temp.value)}
-                inputobj1 = {...inputobj1,...x};
+            if (temp.value != "") {
+                // check if it is not input value is not record
+                let x = { [alphabet[j]]: stringToList(temp.value) };
+                inputobj1 = { ...inputobj1, ...x };
             }
 
             // get value for use in function check FA
@@ -105,8 +94,12 @@ function visulize() {
             inputobj2 = { ...inputobj2, ...t };
         }
         allTransition[[str]] = inputobj1; // using for all part expect check FA
-        Transition[[str]] = inputobj2;  // using for only function check FA
+        Transition[[str]] = inputobj2; // using for only function check FA
     }
+    console.log(allState);
+    console.log(startState);
+    console.log(accepteState);
+    console.log(alphabet);
     console.log(allTransition);
     // const Check = isDFA();
     // console.log(Check);
@@ -201,52 +194,269 @@ function getEpsilonClosure(states) {
             }
         }
     }
-
     return Array.from(visited);
 }
 //------------- make action
 
-resetBtn.addEventListener('click', function () {
+resetBtn.addEventListener("click", function () {
     inputStates.value = "";
     inputStartState.value = "";
     inputAlphabets.value = "";
     inputAcceptState.value = "";
-    document.querySelector("#transitions").innerHTML = '';
+    document.querySelector("#transitions").innerHTML = "";
     document.getElementById("typeFA").innerHTML = "N/A";
-
-
 });
 
-addTransition.addEventListener('click', function () {
+addTransition.addEventListener("click", function () {
     getInput();
+    makeTransition();
 });
 
-visualize.addEventListener('click', function () {
+visualize.addEventListener("click", function () {
     visulize();
-    if(isDFA()){
+    if (isDFA()) {
         document.getElementById("typeFA").innerHTML = "DFA";
-    }else{
+    } else {
         document.getElementById("typeFA").innerHTML = "NFA";
     }
 });
 
 let checkString = document.getElementById("inputString");
-document.getElementById("forTest").addEventListener("click", function(){
+document.getElementById("forTest").addEventListener("click", function () {
     // visulize();
-    let accept = true;
-    if(isDFA()){
-        accept = isAcceptedDFA(checkString.value);
-        document.getElementById('test1').innerHTML = "Test String (DFA)";
-    }else{
-        accept = isAcceptedNFA(checkString.value);
-        document.getElementById('test1').innerHTML = "Test String (NFA)";
+    let isDfa = true;
+    if (isDFA()) {
+        isDfa = isAcceptedDFA(checkString.value);
+        document.getElementById("test1").innerHTML = "Test String (DFA)";
+    } else {
+        isDfa = isAcceptedNFA(checkString.value);
+        document.getElementById("test1").innerHTML = "Test String (NFA)";
     }
 
-    if(accept){
+    if (isDfa) {
         document.getElementById("result").innerHTML = "Accepted..";
         document.getElementById("result").style.color = "green";
-    }else{
+    } else {
         document.getElementById("result").innerHTML = "Rejected!!";
         document.getElementById("result").style.color = "red";
     }
 });
+
+var nfa = {};
+var dfa = {};
+document.getElementById("nfa2dfa").addEventListener("click", function () {
+    let alphabets = alphabet;
+    alphabets.pop();
+    nfa = {
+        states: allState,
+        symbols: alphabets,
+        transitions: allTransition,
+        StartState: startState,
+        AcceptStates: accepteState
+    };
+
+    dfa = convertNFAToDFA(nfa);
+    // console.log(dfa);
+    // console.log(duplicateValue);
+    outPutNFA(dfa);
+});
+
+function convertNFAToDFA(nfa) {
+    const dfa = {
+        states: [],
+        symbols: nfa.symbols,
+        transitions: {},
+        startState: "",
+        acceptStates: [],
+    };
+
+    const initialState = getEpsilon(nfa, [nfa.StartState]);
+    const unmarkedStates = [initialState];
+
+    dfa.states.push(initialState);
+
+    while (unmarkedStates.length > 0) {
+        const currentState = unmarkedStates.shift();
+        const currentStateKey = currentState.join(",");
+
+        if (currentStateKey === "") {
+            // currentStateKey = "REJ";
+            continue;
+        }
+
+        for (const symbol of dfa.symbols) {
+            const nextStates = getNextStates(nfa, currentState, symbol);
+            const epsilonClosure = getEpsilon(nfa, nextStates);
+            const epsilonClosureKey = epsilonClosure.join(",");
+
+            if (!dfa.states.includes(epsilonClosureKey)) {
+                dfa.states.push(epsilonClosureKey);
+                unmarkedStates.push(epsilonClosure);
+            }
+
+            dfa.transitions[currentStateKey] = dfa.transitions[currentStateKey] || {};
+            dfa.transitions[currentStateKey][symbol] = epsilonClosureKey;
+        }
+
+        if (currentState.some((state) => nfa.AcceptStates.includes(state))) {
+            dfa.acceptStates.push(currentStateKey);
+        }
+    }
+
+    dfa.startState = initialState.join(",");
+    dfa.states = dfa.states.slice(1); // drop array index 0
+    dfa.acceptStates = removeDuplicate(dfa.acceptStates); // change value of #duplicateValue follow acceptStates
+
+    // change value of #duplicateValue again follow states that we need to remove duplicate value from transition
+    dfa.states = removeDuplicate(dfa.states);
+
+    // loop for remove duplicateValue transition
+    for (let i = 0; i < duplicateValue.length; i++) {
+        delete dfa.transitions[duplicateValue[i]];
+    }
+
+    // add state Reject if have
+    for (let s=0; s<dfa.states.length; s++){
+        if(dfa.states[s] == ''){
+            dfa.states[s] = "REJ";
+            let reject = {};
+            for (let symbol of dfa.symbols){
+                let t = {[symbol]:["REJ"]};
+                reject = {...reject,...t};
+            }
+            dfa.transitions['REJ'] = reject;
+        }
+
+        // Check in transition if transition to null it will show reject
+        for(let symbol1 of dfa.symbols){
+            if(dfa.transitions[dfa.states[s]][symbol1] == ''){
+                dfa.transitions[dfa.states[s]][symbol1] = ['REJ'];
+            }
+        }
+    }
+    
+
+    return dfa;
+}
+// Rest of the code remains the same
+
+function getEpsilon(nfa, states) {  // for convert NFA to DFA
+    const epsilonClosure = new Set(states);
+    const stack = [...states];
+
+    while (stack.length > 0) {
+        const currentState = stack.pop();
+
+        if (nfa.transitions[currentState] && nfa.transitions[currentState]["op"]) {
+            const nextStates = nfa.transitions[currentState]["op"];
+
+            for (const nextState of nextStates) {
+                if (!epsilonClosure.has(nextState)) {
+                    epsilonClosure.add(nextState);
+                    stack.push(nextState);
+                }
+            }
+        }
+    }
+
+    return Array.from(epsilonClosure);
+}
+
+function getNextStates(nfa, states, symbol) {
+    const nextStates = [];
+
+    for (const state of states) {
+        if (nfa.transitions[state] && nfa.transitions[state][symbol]) {
+            nextStates.push(...nfa.transitions[state][symbol]);
+        }
+    }
+
+    return nextStates;
+}
+
+function findDuplicate(states) {
+    for (let i = 0; i < states.length; i++) {
+        for (let j = i + 1; j < states.length; j++) {
+            if (areSetsEqual(states[i].split(","), states[j].split(","))) {
+                duplicateValue.push(states[j]);
+                return j; // Return index of the duplicate element
+            }
+        }
+    }
+    return -1; // No duplicate found
+}
+
+function areSetsEqual(arr1, arr2) {
+    if (arr1.length !== arr2.length) {
+        return false;
+    }
+
+    const set1 = new Set(arr1);
+    const set2 = new Set(arr2);
+
+    for (let elem of set1) {
+        if (!set2.has(elem)) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+function removeDuplicate(states) {
+    duplicateValue = [];
+    const duplicateIndex = findDuplicate(states);
+    if (states.length != 1) {
+        if (duplicateIndex !== -1) {
+            states.splice(duplicateIndex, 1); // Remove duplicate element
+        }
+    }
+    return states;
+}
+// outPutNFA();
+function outPutNFA(dfa) {
+    
+    console.log(dfa);
+    let output = document.getElementById("outputDFAConvert");
+    text = `<div class="classTransition">DFA Output</div>
+      <table >
+      <tr>`;
+    for (let x = 0; x <= dfa.symbols.length; x++) {
+        if (x == 0) {
+            text = text + `<th>State</th>`;
+        } else {
+            text = text + `<th>${dfa.symbols[x-1]}</th>`;
+        }
+    }
+
+    for (let i = 0; i <= dfa.states.length; i++) {
+        if (i != 0) {
+            let Transitions_state = dfa.transitions[dfa.states[i-1]];
+            text = text + `</tr><tr>`;
+            if(dfa.startState == dfa.states[i-1]){
+                if(dfa.acceptStates.includes(dfa.states)){
+                    text = text + `<th>👉${dfa.states[i-1]}*</th>`;
+                }else{
+                    text = text + `<th>👉${dfa.states[i-1]}</th>`;
+                }
+            }else{
+                if(dfa.acceptStates.includes(dfa.states[i-1])){
+                    // print star for accept states
+                    text = text + `<th>${dfa.states[i-1]}*</th>`;
+                }else{
+                    text = text + `<th>${dfa.states[i-1]}</th>`;
+                }
+            }
+            for (let j = 0; j <= dfa.symbols.length; j++) {
+                if (j != 0) {
+                        // if(Transitions_state[dfa.symbols[j-1]] ==''){
+                        //     console.log("undefined");
+                        //     Transitions_state[dfa.symbols[j-1]] = ["REJ"];
+                        // }
+                    text = text +`<td>${Transitions_state[dfa.symbols[j-1]]}</td>`;
+                }
+            }
+        }
+    }
+    output.innerHTML = text + `</tr></table>`;
+}
