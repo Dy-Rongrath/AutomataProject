@@ -1,17 +1,10 @@
-//ALgorithim
-//Minimization of DFA 
-//Suppose there is a DFA D < Q, Σ, q0, δ, F > which recognizes a language L. Then the minimized DFA D < Q’, Σ, q0, δ’, F’ > can be constructed for language L as: 
-//Step 1: We will divide Q (set of states) into two sets. One set will contain all final states and other set will contain non-final states. This partition is called P0. 
-//Step 2: Initialize k = 1 
-//Step 3: Find Pk by partitioning the different sets of Pk-1. In each set of Pk-1, we will take all possible pair of states. If two states of a set are distinguishable, we will split the sets into different sets in Pk. 
-//Step 4: Stop when Pk = Pk-1 (No change in partition) 
-//Step 5: All states of one set are merged into one. No. of states in minimized DFA will be equal to no. of sets in Pk. 
-//How to find whether two states in partition Pk are distinguishable ? 
-//Two states ( qi, qj ) are distinguishable in partition Pk if for any input symbol a, δ ( qi, a ) and δ ( qj, a ) are in different sets in partition Pk-1.
-
 function minimizeDFA(dfa) {
   // Step 1: Initialize the partitions
   let partitions = [dfa.acceptStates, difference(dfa.states, dfa.acceptStates)];
+
+  // Step 1.5: Remove unreachable states
+  let reachableStates = getReachableStates(dfa);
+  partitions = partitions.map(partition => partition.filter(state => reachableStates.includes(state)));
 
   while (true) {
     let newPartitions = [];
@@ -37,30 +30,59 @@ function minimizeDFA(dfa) {
     partitions = newPartitions;
   }
 
-  // Construct the minimized DFA using the final partitions
+  // Merge overlapping states into a single state
+  const mergedStates = partitions.map(partition => partition.join(','));
+  const uniqueStates = Array.from(new Set(mergedStates)); // Remove duplicates
+
+  const mergedTransitions = {};
+
+  for (let representativeState of uniqueStates) {
+    mergedTransitions[representativeState] = {};
+
+    for (let symbol of dfa.alphabet) {
+      const nextStates = new Set();
+      for (let state of representativeState.split(',')) {
+        const nextState = dfa.transitions[state][symbol][0];
+        const nextStatePartition = findPartition(nextState, partitions);
+        const nextStateMergedState = nextStatePartition.join(',');
+        nextStates.add(nextStateMergedState);
+      }
+      mergedTransitions[representativeState][symbol] = [...nextStates];
+    }
+  }
+
+  // Construct the minimized DFA using the merged states and transitions
   const minimizedDFA = {
-    states: partitions.map(partition => partition.join(',')),
+    states: uniqueStates,
     alphabet: dfa.alphabet,
-    transitions: {},
-    startState: findPartition(dfa.startState, partitions),
+    transitions: mergedTransitions,
+    startState: findPartition(dfa.startState, partitions).join(','),
     acceptStates: partitions.filter(partition =>
       partition.some(state => dfa.acceptStates.includes(state))
     ).map(partition => partition.join(',')),
   };
 
-  // Update the transitions of the minimized DFA
-  for (let partition of partitions) {
-    const representative = partition[0];
-    minimizedDFA.transitions[representative] = {};
+  return minimizedDFA;
+}
+
+// Helper function to find reachable states in the DFA
+function getReachableStates(dfa) {
+  const queue = [dfa.startState];
+  const visited = new Set([dfa.startState]);
+
+  while (queue.length > 0) {
+    const currentState = queue.shift();
 
     for (let symbol of dfa.alphabet) {
-      const nextState = dfa.transitions[representative][symbol][0];
-      const nextStatePartition = findPartition(nextState, partitions);
-      minimizedDFA.transitions[representative][symbol] = [nextStatePartition.join(',')];
+      const nextState = dfa.transitions[currentState][symbol][0];
+      if (!visited.has(nextState)) {
+        visited.add(nextState);
+        queue.push(nextState);
+      }
     }
   }
 
-  return minimizedDFA;
+  return Array.from(visited);
 }
 
 // Helper function to find the difference between two arrays
@@ -101,26 +123,19 @@ function findPartition(state, partitions) {
 
 // Example usage
 const dfa = {
-  states: ['q0', 'q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7'],
-  alphabet: ['a', 'b'],
+  states: ['q0', 'q1', 'q2', 'q3', 'q4', 'q5'],
+  alphabet: ['0', '1'],
   transitions: {
-    'q0': { 'a': ['q1'], 'b': ['q5'] },
-    'q1': { 'a': ['q6'], 'b': ['q2'] },
-    'q2': { 'a': ['q0'], 'b': ['q2'] },
-    'q3': { 'a': ['q2'], 'b': ['q6'] },
-    'q4': { 'a': ['q7'], 'b': ['q5'] },
-    'q5': { 'a': ['q2'], 'b': ['q6'] },
-    'q6': { 'a': ['q6'], 'b': ['q4'] },
-    'q7': { 'a': ['q6'], 'b': ['q2'] },
+    'q0': { '0': ['q3'], '1': ['q1'] },
+    'q1': { '0': ['q2'], '1': ['q5'] },
+    'q2': { '0': ['q2'], '1': ['q5'] },
+    'q3': { '0': ['q0'], '1': ['q4'] },
+    'q4': { '0': ['q2'], '1': ['q5'] },
+    'q5': { '0': ['q5'], '1': ['q5'] },
   },
   startState: 'q0',
-  acceptStates: ['q2'],
+  acceptStates: ['q1', 'q2', 'q4'],
 };
 
 const minimizedDFA = minimizeDFA(dfa);
 console.log(minimizedDFA);
-
-let output = document.getElementById("output");
-document.getElementById("btn").addEventListener('click', function(){
-  let text = '';
-});
