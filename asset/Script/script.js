@@ -9,7 +9,7 @@ const visualize = document.querySelector("#visualization");
 
 var allState = {};
 var alphabet = {};
-var startState = "";
+var startState = [];
 var accepteState = {};
 var allTransition = {}; // this allTransition for use test string
 var Transition = {}; // this for use to check DFA or not
@@ -28,7 +28,7 @@ function getInput() {
   allState = stringToList(inputStates.value);
   let alphabetop = inputAlphabets.value + ",op"; // alphabet + "op" that op equal to ∈ transition
   alphabet = stringToList(alphabetop);
-  startState = inputStartState.value.trim();
+  startState = stringToList(inputStartState.value);
   accepteState = stringToList(inputAcceptState.value);
 
   console.log(allState);
@@ -111,7 +111,7 @@ function visulize() {
   fa = {
     states : allState,
     alphabet: symbol,
-    startState,
+    startState:startState[0],
     acceptStates: accepteState,
     transitions: allTransition
   }
