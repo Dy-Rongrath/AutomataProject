@@ -220,6 +220,7 @@ resetBtn.addEventListener("click", function () {
   inputAcceptState.value = "";
   document.querySelector("#transitions").innerHTML = "";
   document.getElementById("typeFA").innerHTML = "N/A";
+  document.getElementById("OutputMinimize"),innerHTML = "";
 });
 
 addTransition.addEventListener("click", function () {
@@ -670,4 +671,3 @@ btnMinimize.addEventListener("click", function () {
   
   outPutMinimiz();
 });
-

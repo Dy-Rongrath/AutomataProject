@@ -440,7 +440,7 @@ function removeDuplicate(states) {
 function outPutNFA(dfa) {
   console.log(dfa);
   let output = document.getElementById("outputDFAConvert");
-  let text = `<div class="classTransition">DFA Output</div>
+  let text = `
       <table >
       <tr>`;
   // for show only all alphabet (symbol) to the table
@@ -624,7 +624,7 @@ function outPutMinimiz() {
   let minimize = minimizeDFA(fa);
   console.log(minimize);
   let output = document.getElementById("OutputMinimize");
-  let text = `<div class="classTransition">Minimize Output</div>
+  let text = `
       <table >
       <tr>`;
   // for show only all alphabet (symbol) to the table
