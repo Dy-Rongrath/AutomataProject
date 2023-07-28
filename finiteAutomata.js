@@ -106,15 +106,15 @@ function visulize() {
 
   let symbol = alphabet.slice(0, -1);
   console.log("symbol: " + symbol);
-  console.log("alphabet: "+ alphabet);
+  console.log("alphabet: " + alphabet);
 
   fa = {
-    states : allState,
+    states: allState,
     alphabet: symbol,
-    startState:startState[0],
+    startState: startState[0],
     acceptStates: accepteState,
-    transitions: allTransition
-  }
+    transitions: allTransition,
+  };
   console.log(fa);
   // const Check = isDFA();
   // console.log(Check);
@@ -276,18 +276,17 @@ function convertNFAToDFA(nfa) {
   dfa.startState = initialState.join(",");
   dfa.states = dfa.states.slice(1); // drop array index 0
   dfa.acceptStates = removeDuplicate(dfa.acceptStates); // change value of #duplicateValue follow acceptStates
-  console.log("Duplicate : "+duplicateValue);
+  console.log("Duplicate : " + duplicateValue);
   // change value of #duplicateValue again follow states that we need to remove duplicate value from transition
   dfa.states = removeDuplicate(dfa.states);
 
   // loop for remove duplicateValue transition
   for (let i = 0; i < duplicateValue.length; i++) {
-    console.log("Duplicate : "+i+duplicateValue[i]);
+    console.log("Duplicate : " + i + duplicateValue[i]);
     delete dfa.transitions[duplicateValue[i]];
   }
 
-
-  if(!dfa.states.includes(dfa.startState)){
+  if (!dfa.states.includes(dfa.startState)) {
     dfa.states.push(dfa.startState);
   }
 
@@ -395,49 +394,55 @@ function removeDuplicate(states) {
 function outPutNFA(dfa) {
   console.log(dfa);
   let output = document.getElementById("outputDFAConvert");
-  let text = `
+  if (isDFA()) {
+    output.innerHTML = "Input is not NFA";
+    output.style.width = "100%";
+    output.style.marginTop = "30px";
+    output.style.textAlign = "center";
+  } else {
+    let text = `
       <table >
       <tr>`;
-  // for show only all alphabet (symbol) to the table
-  for (let x = 0; x <= dfa.symbols.length; x++) {
-    if (x == 0) {
-      text = text + `<th>State</th>`;
-    } else {
-      text = text + `<th>${dfa.symbols[x - 1]}</th>`;
-    }
-  }
-
-  // for all states and value to the table
-  for (let i = 0; i <= dfa.states.length; i++) {
-    if (i != 0) {
-      let Transitions_state = dfa.transitions[dfa.states[i - 1]];
-      text = text + `</tr><tr>`;
-      if (dfa.startState == dfa.states[i - 1]) {
-        // test if it start states
-        if (dfa.acceptStates.includes(dfa.states)) {
-          // test if it start and accept state will show  👉{state}*
-          text = text + `<th>👉${dfa.states[i - 1]}*</th>`;
-        } else {
-          text = text + `<th>👉${dfa.states[i - 1]}</th>`;
-        }
+    // for show only all alphabet (symbol) to the table
+    for (let x = 0; x <= dfa.symbols.length; x++) {
+      if (x == 0) {
+        text = text + `<th>State</th>`;
       } else {
-        if (dfa.acceptStates.includes(dfa.states[i - 1])) {
-          // print star for accept states
-          text = text + `<th>${dfa.states[i - 1]}*</th>`;
-        } else {
-          text = text + `<th>${dfa.states[i - 1]}</th>`;
-        }
+        text = text + `<th>${dfa.symbols[x - 1]}</th>`;
       }
-      for (let j = 0; j <= dfa.symbols.length; j++) {
-        if (j != 0) {
-          text = text + `<td>${Transitions_state[dfa.symbols[j - 1]]}</td>`;
+    }
+
+    // for all states and value to the table
+    for (let i = 0; i <= dfa.states.length; i++) {
+      if (i != 0) {
+        let Transitions_state = dfa.transitions[dfa.states[i - 1]];
+        text = text + `</tr><tr>`;
+        if (dfa.startState == dfa.states[i - 1]) {
+          // test if it start states
+          if (dfa.acceptStates.includes(dfa.states)) {
+            // test if it start and accept state will show  👉{state}*
+            text = text + `<th>👉${dfa.states[i - 1]}*</th>`;
+          } else {
+            text = text + `<th>👉${dfa.states[i - 1]}</th>`;
+          }
+        } else {
+          if (dfa.acceptStates.includes(dfa.states[i - 1])) {
+            // print star for accept states
+            text = text + `<th>${dfa.states[i - 1]}*</th>`;
+          } else {
+            text = text + `<th>${dfa.states[i - 1]}</th>`;
+          }
+        }
+        for (let j = 0; j <= dfa.symbols.length; j++) {
+          if (j != 0) {
+            text = text + `<td>${Transitions_state[dfa.symbols[j - 1]]}</td>`;
+          }
         }
       }
     }
+    output.innerHTML = text + `</tr></table>`;
   }
-  output.innerHTML = text + `</tr></table>`;
 }
-
 
 function minimizeDFA(fa) {
   // Step 1: Initialize the partitions
@@ -566,8 +571,6 @@ function findPartition(state, partitions) {
   return partitions.find((partition) => partition.includes(state));
 }
 
-
- 
 // // const minimized = minimizeDFA(fa);
 // // console.log(minimized);
 // // Example usage
@@ -576,56 +579,63 @@ let btnMinimize = document.getElementById("Minimize");
 function outPutMinimiz() {
   console.log("Minimize");
   console.log(fa);
-  let minimize = minimizeDFA(fa);
-  console.log(minimize);
+
   let output = document.getElementById("OutputMinimize");
-  let text = `
+  if (isDFA()) {
+    let minimize = minimizeDFA(fa);
+    console.log(minimize);
+    let text = `
       <table >
       <tr>`;
-  // for show only all alphabet (symbol) to the table
-  for (let x = 0; x <= minimize.alphabet.length; x++) {
-    if (x == 0) {
-      text = text + `<th>State</th>`;
-    } else {
-      text = text + `<th>${minimize.alphabet[x - 1]}</th>`;
-    }
-  }
-
-  // for all states and value to the table
-  for (let i = 0; i <= minimize.states.length; i++) {
-    if (i != 0) {
-      let Transitions_state = minimize.transitions[minimize.states[i - 1]];
-      text = text + `</tr><tr>`;
-      if (minimize.startState == minimize.states[i - 1]) {
-        // test if it start states
-        if (minimize.acceptStates.includes(minimize.states)) {
-          // test if it start and accept state will show  👉{state}*
-          text = text + `<th>👉${minimize.states[i - 1]}*</th>`;
-        } else {
-          text = text + `<th>👉${minimize.states[i - 1]}</th>`;
-        }
+    // for show only all alphabet (symbol) to the table
+    for (let x = 0; x <= minimize.alphabet.length; x++) {
+      if (x == 0) {
+        text = text + `<th>State</th>`;
       } else {
-        if (minimize.acceptStates.includes(minimize.states[i - 1])) {
-          // print star for accept states
-          text = text + `<th>${minimize.states[i - 1]}*</th>`;
-        } else {
-          text = text + `<th>${minimize.states[i - 1]}</th>`;
-        }
+        text = text + `<th>${minimize.alphabet[x - 1]}</th>`;
       }
-      for (let j = 0; j <= minimize.alphabet.length; j++) {
-        if (j != 0) {
-          text = text + `<td>${Transitions_state[minimize.alphabet[j - 1]]}</td>`;
+    }
+
+    // for all states and value to the table
+    for (let i = 0; i <= minimize.states.length; i++) {
+      if (i != 0) {
+        let Transitions_state = minimize.transitions[minimize.states[i - 1]];
+        text = text + `</tr><tr>`;
+        if (minimize.startState == minimize.states[i - 1]) {
+          // test if it start states
+          if (minimize.acceptStates.includes(minimize.states)) {
+            // test if it start and accept state will show  👉{state}*
+            text = text + `<th>👉${minimize.states[i - 1]}*</th>`;
+          } else {
+            text = text + `<th>👉${minimize.states[i - 1]}</th>`;
+          }
+        } else {
+          if (minimize.acceptStates.includes(minimize.states[i - 1])) {
+            // print star for accept states
+            text = text + `<th>${minimize.states[i - 1]}*</th>`;
+          } else {
+            text = text + `<th>${minimize.states[i - 1]}</th>`;
+          }
+        }
+        for (let j = 0; j <= minimize.alphabet.length; j++) {
+          if (j != 0) {
+            text =
+              text + `<td>${Transitions_state[minimize.alphabet[j - 1]]}</td>`;
+          }
         }
       }
     }
+    output.innerHTML = text + `</tr></table>`;
+  } else {
+    output.innerHTML = "Input is not DFA";
+    output.style.width = "100%";
+    output.style.marginTop = "30px";
+    output.style.textAlign = "center";
   }
-  output.innerHTML = text + `</tr></table>`;
 }
 btnMinimize.addEventListener("click", function () {
-  
   outPutMinimiz();
 });
-
 
 //------------- make action
 
@@ -654,7 +664,7 @@ visualize.addEventListener("click", function () {
 
 let checkString = document.getElementById("inputString");
 document.getElementById("forTest").addEventListener("click", function () {
-  // visulize();
+  visulize();
   let isDfa = true;
   if (isDFA()) {
     isDfa = isAcceptedDFA(checkString.value);

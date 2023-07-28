@@ -106,15 +106,15 @@ function visulize() {
 
   let symbol = alphabet.slice(0, -1);
   console.log("symbol: " + symbol);
-  console.log("alphabet: " + alphabet);
+  console.log("alphabet: "+ alphabet);
 
   fa = {
-    states: allState,
+    states : allState,
     alphabet: symbol,
-    startState: startState[0],
+    startState:startState[0],
     acceptStates: accepteState,
-    transitions: allTransition,
-  };
+    transitions: allTransition
+  }
   console.log(fa);
   // const Check = isDFA();
   // console.log(Check);
@@ -225,27 +225,8 @@ document.getElementById("nfa2dfa").addEventListener("click", function () {
     AcceptStates: accepteState,
   };
 
-  if (isDFA) {
-    const originalTransition = fa.transitions;
-    const convertedTransition = {};
-
-    for (let state in originalTransition) {
-      const transitions = originalTransition[state];
-      convertedTransition[state] = {};
-
-      for (let symbol in transitions) {
-        const nextState = transitions[symbol][0];
-        convertedTransition[state][symbol] = nextState;
-      }
-    }
-    nfa.transitions = convertedTransition;
-    dfa = nfa;
-  } else {
-    dfa = convertNFAToDFA(nfa);
-  }
-  console.log(fa);
   dfa = convertNFAToDFA(nfa);
-  console.log(dfa);
+  // console.log(dfa);
   // console.log(duplicateValue);
   outPutNFA(dfa);
 });
@@ -295,17 +276,18 @@ function convertNFAToDFA(nfa) {
   dfa.startState = initialState.join(",");
   dfa.states = dfa.states.slice(1); // drop array index 0
   dfa.acceptStates = removeDuplicate(dfa.acceptStates); // change value of #duplicateValue follow acceptStates
-  console.log("Duplicate : " + duplicateValue);
+  console.log("Duplicate : "+duplicateValue);
   // change value of #duplicateValue again follow states that we need to remove duplicate value from transition
   dfa.states = removeDuplicate(dfa.states);
 
   // loop for remove duplicateValue transition
   for (let i = 0; i < duplicateValue.length; i++) {
-    console.log("Duplicate : " + i + duplicateValue[i]);
+    console.log("Duplicate : "+i+duplicateValue[i]);
     delete dfa.transitions[duplicateValue[i]];
   }
 
-  if (!dfa.states.includes(dfa.startState)) {
+
+  if(!dfa.states.includes(dfa.startState)){
     dfa.states.push(dfa.startState);
   }
 
@@ -456,6 +438,7 @@ function outPutNFA(dfa) {
   output.innerHTML = text + `</tr></table>`;
 }
 
+
 function minimizeDFA(fa) {
   // Step 1: Initialize the partitions
   let partitions = [fa.acceptStates, difference(fa.states, fa.acceptStates)];
@@ -583,6 +566,8 @@ function findPartition(state, partitions) {
   return partitions.find((partition) => partition.includes(state));
 }
 
+
+ 
 // // const minimized = minimizeDFA(fa);
 // // console.log(minimized);
 // // Example usage
@@ -629,8 +614,7 @@ function outPutMinimiz() {
       }
       for (let j = 0; j <= minimize.alphabet.length; j++) {
         if (j != 0) {
-          text =
-            text + `<td>${Transitions_state[minimize.alphabet[j - 1]]}</td>`;
+          text = text + `<td>${Transitions_state[minimize.alphabet[j - 1]]}</td>`;
         }
       }
     }
@@ -638,8 +622,10 @@ function outPutMinimiz() {
   output.innerHTML = text + `</tr></table>`;
 }
 btnMinimize.addEventListener("click", function () {
+  
   outPutMinimiz();
 });
+
 
 //------------- make action
 
