@@ -664,7 +664,6 @@ visualize.addEventListener("click", function () {
 
 let checkString = document.getElementById("inputString");
 document.getElementById("forTest").addEventListener("click", function () {
-  visulize();
   let isDfa = true;
   if (isDFA()) {
     isDfa = isAcceptedDFA(checkString.value);
