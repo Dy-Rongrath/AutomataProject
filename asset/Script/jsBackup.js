@@ -106,15 +106,15 @@ function visulize() {
 
   let symbol = alphabet.slice(0, -1);
   console.log("symbol: " + symbol);
-  console.log("alphabet: "+ alphabet);
+  console.log("alphabet: " + alphabet);
 
   fa = {
-    states : allState,
+    states: allState,
     alphabet: symbol,
-    startState:startState[0],
+    startState: startState[0],
     acceptStates: accepteState,
-    transitions: allTransition
-  }
+    transitions: allTransition,
+  };
   console.log(fa);
   // const Check = isDFA();
   // console.log(Check);
@@ -211,52 +211,6 @@ function getEpsilonClosure(states) {
   }
   return Array.from(visited);
 }
-//------------- make action
-
-resetBtn.addEventListener("click", function () {
-  inputStates.value = "";
-  inputStartState.value = "";
-  inputAlphabets.value = "";
-  inputAcceptState.value = "";
-  document.querySelector("#transitions").innerHTML = "";
-  document.getElementById("typeFA").innerHTML = "N/A";
-  document.getElementById("OutputMinimize"),innerHTML = "";
-});
-
-addTransition.addEventListener("click", function () {
-  getInput();
-  makeTransition();
-});
-
-visualize.addEventListener("click", function () {
-  visulize();
-  if (isDFA()) {
-    document.getElementById("typeFA").innerHTML = "DFA";
-  } else {
-    document.getElementById("typeFA").innerHTML = "NFA";
-  }
-});
-
-let checkString = document.getElementById("inputString");
-document.getElementById("forTest").addEventListener("click", function () {
-  // visulize();
-  let isDfa = true;
-  if (isDFA()) {
-    isDfa = isAcceptedDFA(checkString.value);
-    document.getElementById("test1").innerHTML = "Test String (DFA)";
-  } else {
-    isDfa = isAcceptedNFA(checkString.value);
-    document.getElementById("test1").innerHTML = "Test String (NFA)";
-  }
-
-  if (isDfa) {
-    document.getElementById("result").innerHTML = "Accepted..";
-    document.getElementById("result").style.color = "green";
-  } else {
-    document.getElementById("result").innerHTML = "Rejected!!";
-    document.getElementById("result").style.color = "red";
-  }
-});
 
 var nfa = {};
 var dfa = {};
@@ -271,8 +225,27 @@ document.getElementById("nfa2dfa").addEventListener("click", function () {
     AcceptStates: accepteState,
   };
 
+  if (isDFA) {
+    const originalTransition = fa.transitions;
+    const convertedTransition = {};
+
+    for (let state in originalTransition) {
+      const transitions = originalTransition[state];
+      convertedTransition[state] = {};
+
+      for (let symbol in transitions) {
+        const nextState = transitions[symbol][0];
+        convertedTransition[state][symbol] = nextState;
+      }
+    }
+    nfa.transitions = convertedTransition;
+    dfa = nfa;
+  } else {
+    dfa = convertNFAToDFA(nfa);
+  }
+  console.log(fa);
   dfa = convertNFAToDFA(nfa);
-  // console.log(dfa);
+  console.log(dfa);
   // console.log(duplicateValue);
   outPutNFA(dfa);
 });
@@ -322,18 +295,17 @@ function convertNFAToDFA(nfa) {
   dfa.startState = initialState.join(",");
   dfa.states = dfa.states.slice(1); // drop array index 0
   dfa.acceptStates = removeDuplicate(dfa.acceptStates); // change value of #duplicateValue follow acceptStates
-  console.log("Duplicate : "+duplicateValue);
+  console.log("Duplicate : " + duplicateValue);
   // change value of #duplicateValue again follow states that we need to remove duplicate value from transition
   dfa.states = removeDuplicate(dfa.states);
 
   // loop for remove duplicateValue transition
   for (let i = 0; i < duplicateValue.length; i++) {
-    console.log("Duplicate : "+i+duplicateValue[i]);
+    console.log("Duplicate : " + i + duplicateValue[i]);
     delete dfa.transitions[duplicateValue[i]];
   }
 
-
-  if(!dfa.states.includes(dfa.startState)){
+  if (!dfa.states.includes(dfa.startState)) {
     dfa.states.push(dfa.startState);
   }
 
@@ -441,7 +413,7 @@ function removeDuplicate(states) {
 function outPutNFA(dfa) {
   console.log(dfa);
   let output = document.getElementById("outputDFAConvert");
-  let text = `<div class="classTransition">DFA Output</div>
+  let text = `
       <table >
       <tr>`;
   // for show only all alphabet (symbol) to the table
@@ -483,7 +455,6 @@ function outPutNFA(dfa) {
   }
   output.innerHTML = text + `</tr></table>`;
 }
-
 
 function minimizeDFA(fa) {
   // Step 1: Initialize the partitions
@@ -612,8 +583,6 @@ function findPartition(state, partitions) {
   return partitions.find((partition) => partition.includes(state));
 }
 
-
- 
 // // const minimized = minimizeDFA(fa);
 // // console.log(minimized);
 // // Example usage
@@ -625,7 +594,7 @@ function outPutMinimiz() {
   let minimize = minimizeDFA(fa);
   console.log(minimize);
   let output = document.getElementById("OutputMinimize");
-  let text = `<div class="classTransition">Minimize Output</div>
+  let text = `
       <table >
       <tr>`;
   // for show only all alphabet (symbol) to the table
@@ -660,7 +629,8 @@ function outPutMinimiz() {
       }
       for (let j = 0; j <= minimize.alphabet.length; j++) {
         if (j != 0) {
-          text = text + `<td>${Transitions_state[minimize.alphabet[j - 1]]}</td>`;
+          text =
+            text + `<td>${Transitions_state[minimize.alphabet[j - 1]]}</td>`;
         }
       }
     }
@@ -668,6 +638,51 @@ function outPutMinimiz() {
   output.innerHTML = text + `</tr></table>`;
 }
 btnMinimize.addEventListener("click", function () {
-  
   outPutMinimiz();
+});
+
+//------------- make action
+
+resetBtn.addEventListener("click", function () {
+  inputStates.value = "";
+  inputStartState.value = "";
+  inputAlphabets.value = "";
+  inputAcceptState.value = "";
+  document.querySelector("#transitions").innerHTML = "";
+  document.getElementById("typeFA").innerHTML = "N/A";
+});
+
+addTransition.addEventListener("click", function () {
+  getInput();
+  makeTransition();
+});
+
+visualize.addEventListener("click", function () {
+  visulize();
+  if (isDFA()) {
+    document.getElementById("typeFA").innerHTML = "DFA";
+  } else {
+    document.getElementById("typeFA").innerHTML = "NFA";
+  }
+});
+
+let checkString = document.getElementById("inputString");
+document.getElementById("forTest").addEventListener("click", function () {
+  // visulize();
+  let isDfa = true;
+  if (isDFA()) {
+    isDfa = isAcceptedDFA(checkString.value);
+    document.getElementById("test1").innerHTML = "Test String (DFA)";
+  } else {
+    isDfa = isAcceptedNFA(checkString.value);
+    document.getElementById("test1").innerHTML = "Test String (NFA)";
+  }
+
+  if (isDfa) {
+    document.getElementById("result").innerHTML = "Accepted..";
+    document.getElementById("result").style.color = "green";
+  } else {
+    document.getElementById("result").innerHTML = "Rejected!!";
+    document.getElementById("result").style.color = "red";
+  }
 });

@@ -211,51 +211,6 @@ function getEpsilonClosure(states) {
   }
   return Array.from(visited);
 }
-//------------- make action
-
-resetBtn.addEventListener("click", function () {
-  inputStates.value = "";
-  inputStartState.value = "";
-  inputAlphabets.value = "";
-  inputAcceptState.value = "";
-  document.querySelector("#transitions").innerHTML = "";
-  document.getElementById("typeFA").innerHTML = "N/A";
-});
-
-addTransition.addEventListener("click", function () {
-  getInput();
-  makeTransition();
-});
-
-visualize.addEventListener("click", function () {
-  visulize();
-  if (isDFA()) {
-    document.getElementById("typeFA").innerHTML = "DFA";
-  } else {
-    document.getElementById("typeFA").innerHTML = "NFA";
-  }
-});
-
-let checkString = document.getElementById("inputString");
-document.getElementById("forTest").addEventListener("click", function () {
-  // visulize();
-  let isDfa = true;
-  if (isDFA()) {
-    isDfa = isAcceptedDFA(checkString.value);
-    document.getElementById("test1").innerHTML = "Test String (DFA)";
-  } else {
-    isDfa = isAcceptedNFA(checkString.value);
-    document.getElementById("test1").innerHTML = "Test String (NFA)";
-  }
-
-  if (isDfa) {
-    document.getElementById("result").innerHTML = "Accepted..";
-    document.getElementById("result").style.color = "green";
-  } else {
-    document.getElementById("result").innerHTML = "Rejected!!";
-    document.getElementById("result").style.color = "red";
-  }
-});
 
 var nfa = {};
 var dfa = {};
@@ -671,3 +626,49 @@ btnMinimize.addEventListener("click", function () {
   outPutMinimiz();
 });
 
+
+//------------- make action
+
+resetBtn.addEventListener("click", function () {
+  inputStates.value = "";
+  inputStartState.value = "";
+  inputAlphabets.value = "";
+  inputAcceptState.value = "";
+  document.querySelector("#transitions").innerHTML = "";
+  document.getElementById("typeFA").innerHTML = "N/A";
+});
+
+addTransition.addEventListener("click", function () {
+  getInput();
+  makeTransition();
+});
+
+visualize.addEventListener("click", function () {
+  visulize();
+  if (isDFA()) {
+    document.getElementById("typeFA").innerHTML = "DFA";
+  } else {
+    document.getElementById("typeFA").innerHTML = "NFA";
+  }
+});
+
+let checkString = document.getElementById("inputString");
+document.getElementById("forTest").addEventListener("click", function () {
+  // visulize();
+  let isDfa = true;
+  if (isDFA()) {
+    isDfa = isAcceptedDFA(checkString.value);
+    document.getElementById("test1").innerHTML = "Test String (DFA)";
+  } else {
+    isDfa = isAcceptedNFA(checkString.value);
+    document.getElementById("test1").innerHTML = "Test String (NFA)";
+  }
+
+  if (isDfa) {
+    document.getElementById("result").innerHTML = "Accepted..";
+    document.getElementById("result").style.color = "green";
+  } else {
+    document.getElementById("result").innerHTML = "Rejected!!";
+    document.getElementById("result").style.color = "red";
+  }
+});
