@@ -646,6 +646,8 @@ resetBtn.addEventListener("click", function () {
   inputAcceptState.value = "";
   document.querySelector("#transitions").innerHTML = "";
   document.getElementById("typeFA").innerHTML = "N/A";
+  document.getElementById("outputDFAConvert").innerHTML = "";
+  document.getElementById("OutputMinimize").innerHTML = "";
 });
 
 addTransition.addEventListener("click", function () {
